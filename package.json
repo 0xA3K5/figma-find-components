@@ -1,4 +1,27 @@
 {
+  "figma-plugin": {
+    "editorType": [
+      "figma"
+    ],
+    "id": "find-components",
+    "name": "Find Components",
+    "main": "src/main.ts",
+    "ui": "src/ui.tsx"
+  },
+  "name": "figma-find-components",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "build": "npm run build:css && npm run build:js",
+    "build:css": "tailwindcss --input ./src/input.css --output ./src/output.css",
+    "build:js": "build-figma-plugin --typecheck --minify",
+    "watch": "npm run build:css && concurrently npm:watch:css npm:watch:js",
+    "watch:css": "tailwindcss --input ./src/input.css --output ./src/output.css --watch",
+    "watch:js": "build-figma-plugin --typecheck --watch",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "format": "prettier --write 'src/**/*.{ts,js}'"
+  },
   "dependencies": {
     "@create-figma-plugin/ui": "^3.0.2",
     "@create-figma-plugin/utilities": "^3.0.2",
@@ -8,29 +31,18 @@
     "@create-figma-plugin/build": "^3.0.2",
     "@create-figma-plugin/tsconfig": "^3.0.2",
     "@figma/plugin-typings": "1.74.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "bun-types": "latest",
     "concurrently": ">=8",
+    "eslint": "^8.54.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.1.0",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "tailwindcss": ">=3",
-    "typescript": ">=4",
-    "bun-types": "latest"
-  },
-  "scripts": {
-    "build": "npm run build:css && npm run build:js",
-    "build:css": "tailwindcss --input ./src/input.css --output ./src/output.css",
-    "build:js": "build-figma-plugin --typecheck --minify",
-    "watch": "npm run build:css && concurrently npm:watch:css npm:watch:js",
-    "watch:css": "tailwindcss --input ./src/input.css --output ./src/output.css --watch",
-    "watch:js": "build-figma-plugin --typecheck --watch"
-  },
-  "figma-plugin": {
-    "editorType": [
-      "figma"
-    ],
-    "id": "preact-tailwindcss",
-    "name": "Preact Tailwind CSS",
-    "main": "src/main.ts",
-    "ui": "src/ui.tsx"
-  },
-  "name": "figma-find-components",
-  "module": "index.ts",
-  "type": "module"
+    "typescript": "*"
+  }
 }

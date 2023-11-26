@@ -1,7 +1,12 @@
 {
   "extends": "@create-figma-plugin/tsconfig",
   "compilerOptions": {
-    "typeRoots": ["node_modules/@figma", "node_modules/@types"]
+    "typeRoots": ["node_modules/@figma", "node_modules/@types"],
+    "target": "es2020",
+    "downlevelIteration": true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"]
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  }
 }
