@@ -3,7 +3,7 @@
     "es2021": true,
     "node": true
 },
-"extends": ["airbnb-typescript", "airbnb", "airbnb/hooks"],
+"extends": ["airbnb-typescript", "airbnb", "airbnb/hooks", "plugin:tailwindcss/recommended"],
 "plugins": ["import", "@typescript-eslint"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -51,6 +51,7 @@
         "ts": "never",
         "tsx": "never"
       }
-   ]
+   ],
+   "tailwindcss/migration-from-tailwind-2": "off"
   }
 }
