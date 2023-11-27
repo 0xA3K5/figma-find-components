@@ -40,6 +40,8 @@
     "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".ts"] }],
     "react/react-in-jsx-scope": "off",
     "no-undef": "off",
+    "no-shadow": "off",
+    "react/require-default-props": "off",
     "import/extensions": [
       "error",
       "ignorePackages",

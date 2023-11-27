@@ -12,10 +12,10 @@
   "module": "index.ts",
   "type": "module",
   "scripts": {
-    "build": "npm run build:css && npm run build:js",
+    "build": "bun run build:css && bun run build:js",
     "build:css": "tailwindcss --input ./src/input.css --output ./src/output.css",
     "build:js": "build-figma-plugin --typecheck --minify",
-    "watch": "npm run build:css && concurrently npm:watch:css npm:watch:js",
+    "watch": "bun run build:css && concurrently bun:watch:css bun:watch:js",
     "watch:css": "tailwindcss --input ./src/input.css --output ./src/output.css --watch",
     "watch:js": "build-figma-plugin --typecheck --watch",
     "lint": "eslint . --ext .ts",

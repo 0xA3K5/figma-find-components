@@ -19,7 +19,7 @@ export default function InstanceDisplayer({
   return (
     <button
       type="button"
-      className="flex group text-sm justify-between items-center pl-8 pr-4 py-2 border-b"
+      className="flex group text-sm justify-between items-center py-2 border-b"
       onClick={handleSelect}
     >
       <div className="flex items-center gap-2">
@@ -27,7 +27,8 @@ export default function InstanceDisplayer({
           <IconLayerInstance16 width={32} height={32} />
           <p>{instances[0].name}</p>
         </div>
-        <span className="">{`${instances.length} times`}</span>
+        <span className="opacity-40">{'->'}</span>
+        <span className="">{`${instances.length} instances`}</span>
         <span className="opacity-40">on</span>
         <span className="">{pageName}</span>
       </div>
