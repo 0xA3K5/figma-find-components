@@ -10,7 +10,7 @@ interface TabBarProps {
 export default function TabBar({ activeTab, setActiveTab }: TabBarProps): JSX.Element {
   return (
     <div
-      className="fixed left-0 right-0 top-0 z-10 flex items-center justify-between p-3"
+      className="fixed inset-x-0 top-0 z-10 flex items-center justify-between p-3"
       style={{
         borderBottom: '1px solid var(--figma-color-border)',
         backgroundColor: 'var(--figma-color-bg)',

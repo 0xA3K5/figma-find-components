@@ -19,7 +19,7 @@ export default function InstanceDisplayer({
   return (
     <button
       type="button"
-      className="flex group text-sm justify-between items-center py-2 border-b"
+      className="group flex items-center justify-between border-b py-2 text-sm"
       onClick={handleSelect}
     >
       <div className="flex items-center gap-2">
@@ -32,7 +32,7 @@ export default function InstanceDisplayer({
         <span className="opacity-40">on</span>
         <span className="">{pageName}</span>
       </div>
-      <div className="group-hover:opacity-100 opacity-0 flex p-3 rounded-md">
+      <div className="flex rounded-md p-3 opacity-0 group-hover:opacity-100">
         <IconTarget16 />
       </div>
     </button>
