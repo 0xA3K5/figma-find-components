@@ -171,6 +171,7 @@ export default function () {
         node.detachInstance();
       }
     });
+    figma.notify(`🔗 Detached: ${nodesArr.length} instances`);
   });
 
   on<DeleteInstances>('DELETE_INSTANCES', (instances: IComponentInstance[]) => {
@@ -181,6 +182,7 @@ export default function () {
         node.remove();
       }
     });
+    figma.notify(`🗑️ Deleted: ${nodesArr.length} instances`);
   });
 
   showUI({
