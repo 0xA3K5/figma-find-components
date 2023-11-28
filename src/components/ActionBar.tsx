@@ -6,13 +6,13 @@ import { IconLinkBreak, IconTrash } from '../icons';
 
 interface Props {
   checkedInstances: { [key: string]: boolean };
-  grouped: Record<string, Record<string, IComponentInstance[]>>
+  data: Record<string, Record<string, IComponentInstance[]>>
 }
 
-export default function ActionBar({ checkedInstances, grouped }: Props): JSX.Element {
-  const checkedComponentInstances = Object.keys(grouped).reduce((acc, mainCompName) => {
-    Object.keys(grouped[mainCompName]).forEach((pageName) => {
-      const instances = grouped[mainCompName][pageName];
+export default function ActionBar({ checkedInstances, data }: Props): JSX.Element {
+  const checkedComponentInstances = Object.keys(data).reduce((acc, mainCompName) => {
+    Object.keys(data[mainCompName]).forEach((pageName) => {
+      const instances = data[mainCompName][pageName];
       const isAnyInstanceCheckedInGroup = instances
         .some((instance) => checkedInstances[instance.id]);
       if (isAnyInstanceCheckedInGroup) {

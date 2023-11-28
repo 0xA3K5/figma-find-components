@@ -40,7 +40,7 @@ export interface GetLocalMissing extends EventHandler {
 }
 export interface UpdateLocalMissing extends EventHandler {
   name: 'UPDATE_LOCAL_MISSING';
-  handle: (missingComponents: IComponentInstance[]) => void;
+  handle: (local: { missing: IComponentInstance[], components: IComponent[] }) => void;
 }
 
 export interface SelectNodes extends EventHandler {

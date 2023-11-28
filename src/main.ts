@@ -121,7 +121,7 @@ export default function () {
       }
     });
     figma.notify(`Found: ${missingArr.length} missing components`);
-    emit<UpdateLocalMissing>('UPDATE_LOCAL_MISSING', missingArr);
+    emit<UpdateLocalMissing>('UPDATE_LOCAL_MISSING', { missing: missingArr, components });
   });
 
   on<GetRemoteComponents>('GET_REMOTE', () => {

@@ -1,12 +1,11 @@
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 import '!./output.css';
 import { h } from 'preact';
-import { Button, render } from '@create-figma-plugin/ui';
+import { render } from '@create-figma-plugin/ui';
 import { useEffect, useState } from 'preact/hooks';
 import { on, emit } from '@create-figma-plugin/utilities';
 import {
   ETabs,
-  GetLocalMissing,
   GetRemoteComponents,
   IComponent,
   IComponentInstance,
@@ -22,13 +21,13 @@ import Layout from './components/Layout';
 
 function Plugin() {
   const [activeTab, setActiveTab] = useState(ETabs.LOCAL);
-  const [groupedComponents, setGroupedComponents] = useState<Record<
-  string, IComponentInstance[]>>({});
 
   const handleFindComponents = () => {
     emit<FindComponentsHandler>('FIND_COMPONENTS');
   const handleGetLocalMissing = () => {
     emit<GetLocalMissing>('GET_LOCAL_MISSING');
+  const [localMissingInstances, setLocalMissingInstances] = useState<IComponentInstance[]>([]);
+  const [localMainComponents, setLocalMainComponents] = useState<IComponent[]>([]);
   };
   };
 
@@ -45,6 +44,9 @@ function Plugin() {
         return acc;
       }, {} as Record<string, IComponentInstance[]>);
       setGroupedComponents(grouped);
+    on<UpdateLocalMissing>('UPDATE_LOCAL_MISSING', (data: { missing: IComponentInstance[], components: IComponent[] }) => {
+      setLocalMissingInstances(data.missing);
+      setLocalMainComponents(data.components);
     });
   }, []);
 
@@ -55,7 +57,7 @@ function Plugin() {
 
       {activeTab === ETabs.LOCAL && (
       <Layout>
-        <Tabs.Local groupedComponents={groupedComponents} />
+        <Tabs.Local localMissing={localMissingInstances} localMain={localMainComponents} />
       </Layout>
       )}
       {activeTab === ETabs.REMOTE && (
