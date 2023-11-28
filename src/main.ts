@@ -5,7 +5,6 @@ import {
   IComponentInstance,
   TLibrary,
   ResizeWindowHandler,
-  ScanLibrary,
   SelectNodes,
   UpdateLocalMissing,
   UpdateUserLibraries,
@@ -26,6 +25,17 @@ const getPage = (node: BaseNode): PageNode | null => {
   }
   return null;
 };
+
+let localMissingData: {
+  missingInstances: IComponentInstance[], components: IComponent[]
+} = { missingInstances: [], components: [] };
+
+const updateLocalMissingData = (updatedInstances: IComponentInstance[]) => {
+  localMissingData.missingInstances = localMissingData.missingInstances
+    .filter((instance) => !updatedInstances
+      .some((updatedInstance) => updatedInstance.id === instance.id));
+};
+
 const getUserLibraries = async (): Promise<TLibrary> => {
   const userLibraries: TLibrary = (await figma.clientStorage.getAsync('userLibraries')) || {};
   return userLibraries;
@@ -73,6 +83,15 @@ const getComponents = (): IComponent[] => {
   return components;
 };
 
+const figmaSelectNodes = (nodes: SceneNode[]) => {
+  const page = getPage(nodes[0]);
+  if (page !== null) {
+    figma.currentPage = page;
+    figma.currentPage.selection = nodes;
+    figma.viewport.scrollAndZoomIntoView(nodes);
+  }
+};
+
 export default function () {
   on<ResizeWindowHandler>(
     'RESIZE_WINDOW',
@@ -85,12 +104,7 @@ export default function () {
   on<SelectNodes>('SELECT_NODES', (component: IComponentInstance[]): void => {
     const nodesArr = component.map((c) => figma.getNodeById(c.id) as SceneNode);
 
-    const page = getPage(nodesArr[0]);
-    if (page !== null) {
-      figma.currentPage = page;
-      figma.currentPage.selection = nodesArr;
-      figma.viewport.scrollAndZoomIntoView(nodesArr);
-    }
+    figmaSelectNodes(nodesArr);
   });
 
   on<GetLocalMissing>('GET_LOCAL_MISSING', () => {
@@ -165,32 +179,34 @@ export default function () {
 
     emit<UpdateRemoteComponents>('UPDATE_REMOTE_COMPONENTS', (grouped));
   });
+
   on<GetLibraries>('GET_LIBRARIES', async () => {
     const userLibraries = await getUserLibraries();
     emit<UpdateUserLibraries>('UPDATE_USER_LIBRARIES', userLibraries);
   });
-  on<DetachInstances>('DETACH_INSTANCES', (instances: IComponentInstance[]) => {
-    const nodesArr = instances.map((instance) => figma.getNodeById(instance.id));
 
-    nodesArr.forEach((node) => {
+  on<DetachInstances>('DETACH_INSTANCES', (instances: IComponentInstance[]) => {
+    const instanceNodes = instances.map((instance) => figma.getNodeById(instance.id) as SceneNode);
+
+    instanceNodes.forEach((node) => {
       if (node && node.type === 'INSTANCE') {
         node.detachInstance();
       }
     });
-    figma.notify(`🔗 Detached: ${nodesArr.length} instances`);
+    figma.notify(`🔗 Detached: ${instanceNodes.length} instances`);
     updateLocalMissingData(instances);
     emit<UpdateLocalMissing>('UPDATE_LOCAL_MISSING', { missing: localMissingData.missingInstances, components: localMissingData.components });
   });
 
   on<DeleteInstances>('DELETE_INSTANCES', (instances: IComponentInstance[]) => {
-    const nodesArr = instances.map((instance) => figma.getNodeById(instance.id));
+    const instanceNodes = instances.map((instance) => figma.getNodeById(instance.id) as SceneNode);
 
-    nodesArr.forEach((node) => {
+    instanceNodes.forEach((node) => {
       if (node && node.type === 'INSTANCE') {
         node.remove();
       }
     });
-    figma.notify(`🗑️ Deleted: ${nodesArr.length} instances`);
+    figma.notify(`🗑️ Deleted: ${instanceNodes.length} instances`);
     updateLocalMissingData(instances);
     emit<UpdateLocalMissing>('UPDATE_LOCAL_MISSING', { missing: localMissingData.missingInstances, components: localMissingData.components });
   });
@@ -208,13 +224,8 @@ export default function () {
       });
     }
 
-    const page = getPage(instanceNodes[0]);
-    if (page !== null) {
-      figma.currentPage = page;
-      figma.currentPage.selection = instanceNodes;
-      figma.viewport.scrollAndZoomIntoView(instanceNodes);
-    }
     figma.notify(`Replaced: ${instanceNodes.length} instances with ${componentNode?.name}`);
+    figmaSelectNodes(instanceNodes);
     updateLocalMissingData(instances);
     emit<UpdateLocalMissing>('UPDATE_LOCAL_MISSING', { missing: localMissingData.missingInstances, components: localMissingData.components });
   });

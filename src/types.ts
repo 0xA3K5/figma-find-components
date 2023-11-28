@@ -3,7 +3,6 @@ import { EventHandler } from '@create-figma-plugin/utilities';
 
 export enum ETabs {
   LOCAL = 'Local Missing',
-  REMOTE = 'Remote Missing',
 }
 export interface ResizeWindowHandler extends EventHandler {
   name: 'RESIZE_WINDOW';

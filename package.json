@@ -6,7 +6,8 @@
     "id": "find-components",
     "name": "Find Components",
     "main": "src/main.ts",
-    "ui": "src/ui.tsx"
+    "ui": "src/ui.tsx",
+    "version": "v1.0"
   },
   "name": "figma-find-components",
   "module": "index.ts",
@@ -19,8 +20,7 @@
     "watch:css": "tailwindcss --input ./src/input.css --output ./src/output.css --watch",
     "watch:js": "build-figma-plugin --typecheck --watch",
     "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix",
-    "format": "prettier --write 'src/**/*.{ts,js}'"
+    "lint:fix": "eslint . --ext .ts --fix"
   },
   "dependencies": {
     "@create-figma-plugin/ui": "^3.0.2",
