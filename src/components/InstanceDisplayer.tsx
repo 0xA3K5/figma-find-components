@@ -10,16 +10,16 @@ import Checkbox from './Checkbox';
 interface Props {
   instances: IComponentInstance[];
   pageName: string
-  checkedInstances: { [key: string]: boolean };
-  setCheckedInstances: StateUpdater<{ [key: string]: boolean }>
+  checkedInstanceIds: { [key: string]: boolean };
+  setCheckedInstanceIds: StateUpdater<{ [key: string]: boolean }>
   isAnyInstanceChecked: boolean
 }
 
 export default function InstanceDisplayer({
   instances,
   pageName,
-  checkedInstances,
-  setCheckedInstances,
+  checkedInstanceIds,
+  setCheckedInstanceIds,
   isAnyInstanceChecked,
 }: Props): JSX.Element {
   const handleSelect = () => {
@@ -27,7 +27,7 @@ export default function InstanceDisplayer({
   };
 
   const handleCheckboxChange = (instanceId: string) => {
-    setCheckedInstances((prevState: { [key: string]: boolean }) => ({
+    setCheckedInstanceIds((prevState: { [key: string]: boolean }) => ({
       ...prevState,
       [instanceId]: !prevState[instanceId],
     }));
@@ -36,7 +36,7 @@ export default function InstanceDisplayer({
   return (
     <div className="group flex w-full items-center justify-between gap-3 px-4 py-1 text-sm">
       <Checkbox
-        value={checkedInstances[instances[0].id] || false}
+        value={checkedInstanceIds[instances[0].id] || false}
         onChange={() => handleCheckboxChange(instances[0].id)}
         className={`${isAnyInstanceChecked ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
       />

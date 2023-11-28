@@ -14,6 +14,7 @@ import {
   GetRemoteComponents,
   DetachInstances,
   DeleteInstances,
+  ReplaceInstances,
 } from './types';
 
 const getPage = (node: BaseNode): PageNode | null => {
@@ -94,7 +95,6 @@ export default function () {
 
   on<GetLocalMissing>('GET_LOCAL_MISSING', () => {
     const components = [...getComponents(), ...getComponentSets()];
-
     const instances = getInstances();
     const missingArr: IComponentInstance[] = [];
 
@@ -120,8 +120,14 @@ export default function () {
         }
       }
     });
+
     figma.notify(`Found: ${missingArr.length} missing components`);
-    emit<UpdateLocalMissing>('UPDATE_LOCAL_MISSING', { missing: missingArr, components });
+    localMissingData = {
+      missingInstances: missingArr,
+      components,
+    };
+
+    emit<UpdateLocalMissing>('UPDATE_LOCAL_MISSING', { missing: localMissingData.missingInstances, components: localMissingData.components });
   });
 
   on<GetRemoteComponents>('GET_REMOTE', () => {
@@ -172,6 +178,8 @@ export default function () {
       }
     });
     figma.notify(`🔗 Detached: ${nodesArr.length} instances`);
+    updateLocalMissingData(instances);
+    emit<UpdateLocalMissing>('UPDATE_LOCAL_MISSING', { missing: localMissingData.missingInstances, components: localMissingData.components });
   });
 
   on<DeleteInstances>('DELETE_INSTANCES', (instances: IComponentInstance[]) => {
@@ -183,6 +191,32 @@ export default function () {
       }
     });
     figma.notify(`🗑️ Deleted: ${nodesArr.length} instances`);
+    updateLocalMissingData(instances);
+    emit<UpdateLocalMissing>('UPDATE_LOCAL_MISSING', { missing: localMissingData.missingInstances, components: localMissingData.components });
+  });
+
+  on<ReplaceInstances>('REPLACE_INSTANCES', ({ instances, replaceWith }) => {
+    const instanceNodes = instances.map((instance) => figma.getNodeById(instance.id) as SceneNode);
+    const componentNode = figma.getNodeById(replaceWith.id);
+
+    if (componentNode && componentNode.type === 'COMPONENT') {
+      instanceNodes.forEach((instanceNode) => {
+        if (instanceNode && instanceNode.type === 'INSTANCE') {
+          // eslint-disable-next-line no-param-reassign
+          instanceNode.mainComponent = componentNode;
+        }
+      });
+    }
+
+    const page = getPage(instanceNodes[0]);
+    if (page !== null) {
+      figma.currentPage = page;
+      figma.currentPage.selection = instanceNodes;
+      figma.viewport.scrollAndZoomIntoView(instanceNodes);
+    }
+    figma.notify(`Replaced: ${instanceNodes.length} instances with ${componentNode?.name}`);
+    updateLocalMissingData(instances);
+    emit<UpdateLocalMissing>('UPDATE_LOCAL_MISSING', { missing: localMissingData.missingInstances, components: localMissingData.components });
   });
 
   showUI({

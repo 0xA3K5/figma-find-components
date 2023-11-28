@@ -3,7 +3,6 @@ import { IComponentInstance } from '../types';
 export default function groupByMain(
   data: IComponentInstance[],
 ): Record<string, IComponentInstance[]> {
-  console.log('data', data);
   return data.reduce((acc, component) => {
     const mainComponentName = component.mainComponent.name;
 

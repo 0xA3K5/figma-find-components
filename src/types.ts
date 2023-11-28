@@ -71,3 +71,8 @@ export interface DeleteInstances extends EventHandler {
   name: 'DELETE_INSTANCES';
   handler: (instances: IComponentInstance[]) => void
 }
+
+export interface ReplaceInstances extends EventHandler {
+  name: 'REPLACE_INSTANCES';
+  handler: (data: { instances: IComponentInstance[], replaceWith: IComponent }) => void
+}
