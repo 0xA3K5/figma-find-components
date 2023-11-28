@@ -1,40 +1,60 @@
 import { JSX, h } from 'preact';
-import { IconLayerInstance16, IconTarget16 } from '@create-figma-plugin/ui';
 import { emit } from '@create-figma-plugin/utilities';
+import { StateUpdater } from 'preact/hooks';
 import { IComponentInstance, SelectNodes } from '../types';
+import { IconButton } from './button';
+import { IconTarget } from '../icons';
+import { IconInstance } from '../icons/Icons';
+import Checkbox from './Checkbox';
 
 interface Props {
   instances: IComponentInstance[];
   pageName: string
+  checkedInstances: { [key: string]: boolean };
+  setCheckedInstances: StateUpdater<{ [key: string]: boolean }>
+  isAnyInstanceChecked: boolean
 }
 
 export default function InstanceDisplayer({
   instances,
   pageName,
+  checkedInstances,
+  setCheckedInstances,
+  isAnyInstanceChecked,
 }: Props): JSX.Element {
   const handleSelect = () => {
     emit<SelectNodes>('SELECT_NODES', instances);
   };
 
+  const handleCheckboxChange = (instanceId: string) => {
+    setCheckedInstances((prevState: { [key: string]: boolean }) => ({
+      ...prevState,
+      [instanceId]: !prevState[instanceId],
+    }));
+  };
+
   return (
-    <button
-      type="button"
-      className="group flex items-center justify-between border-b py-2 text-sm"
-      onClick={handleSelect}
-    >
-      <div className="flex items-center gap-2">
-        <div className="flex items-center gap-2">
-          <IconLayerInstance16 width={32} height={32} />
-          <p>{instances[0].name}</p>
-        </div>
+    <div className="group flex w-full items-center justify-between gap-3 px-4 py-1 text-sm">
+      <Checkbox
+        value={checkedInstances[instances[0].id] || false}
+        onChange={() => handleCheckboxChange(instances[0].id)}
+        className={`${isAnyInstanceChecked ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
+      />
+      <button
+        type="button"
+        className="flex w-full items-center gap-1"
+        onClick={() => handleCheckboxChange(instances[0].id)}
+      >
+        <IconInstance />
+        <p>{instances[0].name}</p>
         <span className="opacity-40">{'->'}</span>
         <span className="">{`${instances.length} instances`}</span>
         <span className="opacity-40">on</span>
         <span className="">{pageName}</span>
-      </div>
-      <div className="flex rounded-md p-3 opacity-0 group-hover:opacity-100">
-        <IconTarget16 />
-      </div>
-    </button>
+      </button>
+      <IconButton onClick={handleSelect} className="opacity-0 group-hover:opacity-100">
+        <IconTarget />
+      </IconButton>
+    </div>
   );
 }

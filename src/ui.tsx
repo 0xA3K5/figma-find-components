@@ -1,7 +1,6 @@
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 import '!./output.css';
 import { h } from 'preact';
-import { Button, IconLayerComponent16, render } from '@create-figma-plugin/ui';
 import { Button, render } from '@create-figma-plugin/ui';
 import { useEffect, useState } from 'preact/hooks';
 import { on, emit } from '@create-figma-plugin/utilities';
@@ -19,7 +18,7 @@ import {
 } from './types';
 import TabBar from './components/TabBar';
 import Tabs from './tabs';
-import ActionBar from './components/ActionBar';
+import Layout from './components/Layout';
 
 function Plugin() {
   const [activeTab, setActiveTab] = useState(ETabs.LOCAL);
@@ -51,16 +50,20 @@ function Plugin() {
 
 
   return (
-    <div className="flex bg- flex-col gap-4 py-8">
+    <div className="flex flex-col gap-4 py-8">
       <TabBar activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      {activeTab === ETabs.LOCAL && <Tabs.Local groupedComponents={groupedComponents} />}
-      {activeTab === ETabs.REMOTE
-      && <Tabs.Remote components={remoteComponents} libraries={userLibraries} />}
+      {activeTab === ETabs.LOCAL && (
+      <Layout>
+        <Tabs.Local groupedComponents={groupedComponents} />
+      </Layout>
+      )}
+      {activeTab === ETabs.REMOTE && (
+      <Layout>
+        <Tabs.Remote components={remoteComponents} libraries={userLibraries} />
+      </Layout>
+      )}
 
-      <div className="flext fixed bottom-0 w-full gap-8">
-        <Button onClick={handleGetLocalMissing}>Find Local Missing</Button>
-      </div>
     </div>
   );
 }
