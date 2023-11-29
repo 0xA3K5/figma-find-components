@@ -30,7 +30,7 @@ export default function Select({ options, checkedInstances }: Props): JSX.Elemen
     <select
       value={selectedOption?.id || ''}
       onChange={(e) => handleSelect(e)}
-      className="ml-2 flex w-full appearance-none rounded-lg border border-black border-opacity-10 py-2 pl-4 dark:border-white dark:border-opacity-20"
+      className="ml-2 flex w-full appearance-none rounded-lg border border-black border-opacity-10 bg-white py-2 pl-4 dark:border-white dark:border-opacity-20 dark:bg-black"
     >
       <option value="">Replace With</option>
       {Object.entries(options).map(([label, componentArr]) => (
