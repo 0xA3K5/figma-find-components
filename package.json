@@ -6,12 +6,12 @@
     "id": "find-components",
     "name": "Find Components",
     "main": "src/main.ts",
-    "ui": "src/ui.tsx",
-    "version": "v1.0"
+    "ui": "src/ui.tsx"
   },
   "name": "figma-find-components",
   "module": "index.ts",
   "type": "module",
+  "version": "v1.0",
   "scripts": {
     "build": "bun run build:css && bun run build:js",
     "build:css": "tailwindcss --input ./src/input.css --output ./src/output.css",
