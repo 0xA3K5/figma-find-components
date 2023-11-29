@@ -33,6 +33,11 @@ export default function InstanceDisplayer({
     }));
   };
 
+  const handleGroupClick = (instanceId: string) => {
+    handleSelect();
+    handleCheckboxChange(instanceId);
+  };
+
   return (
     <div className="group flex w-full items-center justify-between gap-3 px-4 py-1 text-sm">
       <Checkbox
@@ -43,7 +48,7 @@ export default function InstanceDisplayer({
       <button
         type="button"
         className="flex w-full items-center gap-1"
-        onClick={() => handleCheckboxChange(instances[0].id)}
+        onClick={() => handleGroupClick(instances[0].id)}
       >
         <IconInstance />
         <p>{instances[0].name}</p>
