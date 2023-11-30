@@ -18,12 +18,21 @@ import {
 
 const getPage = (node: BaseNode): PageNode | null => {
   if (node.type === 'PAGE') {
-    return node as PageNode;
+    return node;
   }
   if (node.parent) {
     return getPage(node.parent);
   }
   return null;
+};
+
+const nodeDelete = (node: InstanceNode) => {
+  try {
+    node.remove();
+  } catch (err) {
+    const detachedFrame = node.detachInstance();
+    detachedFrame.remove();
+  }
 };
 
 let localMissingData: {
@@ -199,11 +208,11 @@ export default function () {
   });
 
   on<DeleteInstances>('DELETE_INSTANCES', (instances: IComponentInstance[]) => {
-    const instanceNodes = instances.map((instance) => figma.getNodeById(instance.id) as SceneNode);
+    const instanceNodes = instances.map((instance) => figma.getNodeById(instance.id));
 
     instanceNodes.forEach((node) => {
       if (node && node.type === 'INSTANCE') {
-        node.remove();
+        nodeDelete(node);
       }
     });
     figma.notify(`🗑️ Deleted: ${instanceNodes.length} instances`);
