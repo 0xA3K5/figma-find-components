@@ -78,3 +78,16 @@ export function IconInstance({ size = 24 }: Props): JSX.Element {
     </svg>
   );
 }
+export function IconRefresh({ size = 24 }: Props): JSX.Element {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path d="M7 12C7 14.7614 9.23858 17 12 17C14.7614 17 16.5 14.25 16.5 14.25M17 12C17 9.23858 14.7778 7 12 7C8.66667 7 7 9.75 7 9.75M7 9.75V8M7 9.75H8.75M16.5 14.25H14.75M16.5 14.25V16" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}

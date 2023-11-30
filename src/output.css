@@ -602,8 +602,22 @@ video {
   margin-right: auto;
 }
 
+.my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.my-6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
 .mb-4 {
   margin-bottom: 1rem;
+}
+
+.ml-2 {
+  margin-left: 0.5rem;
 }
 
 .ml-4 {
@@ -626,8 +640,8 @@ video {
   margin-top: 2rem;
 }
 
-.ml-2 {
-  margin-left: 0.5rem;
+.mb-12 {
+  margin-bottom: 3rem;
 }
 
 .block {
@@ -679,6 +693,10 @@ video {
   height: 100%;
 }
 
+.min-h-full {
+  min-height: 100%;
+}
+
 .w-3 {
   width: 0.75rem;
 }
@@ -689,6 +707,10 @@ video {
 
 .w-5 {
   width: 1.25rem;
+}
+
+.w-64 {
+  width: 16rem;
 }
 
 .w-\[1px\] {
@@ -708,10 +730,6 @@ video {
   width: 100vw;
 }
 
-.w-64 {
-  width: 16rem;
-}
-
 .max-w-sm {
   max-width: 24rem;
 }
@@ -726,6 +744,10 @@ video {
 
 .shrink-0 {
   flex-shrink: 0;
+}
+
+.flex-grow-0 {
+  flex-grow: 0;
 }
 
 .cursor-pointer {
@@ -798,6 +820,10 @@ video {
 
 .overflow-clip {
   overflow: clip;
+}
+
+.overflow-scroll {
+  overflow: scroll;
 }
 
 .overflow-x-scroll {
@@ -889,6 +915,15 @@ video {
   --tw-border-opacity: 0.4;
 }
 
+.bg-\[\#2C2C2C\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(44 44 44 / var(--tw-bg-opacity));
+}
+
+.bg-\[var\(--figma-color-bg\)\] {
+  background-color: var(--figma-color-bg);
+}
+
 .bg-black {
   --tw-bg-opacity: 1;
   background-color: rgb(0 0 0 / var(--tw-bg-opacity));
@@ -921,6 +956,10 @@ video {
   background-color: rgb(234 179 8 / var(--tw-bg-opacity));
 }
 
+.bg-opacity-0 {
+  --tw-bg-opacity: 0;
+}
+
 .bg-opacity-10 {
   --tw-bg-opacity: 0.1;
 }
@@ -947,10 +986,6 @@ video {
 
 .bg-opacity-90 {
   --tw-bg-opacity: 0.9;
-}
-
-.bg-opacity-0 {
-  --tw-bg-opacity: 0;
 }
 
 .p-1 {
@@ -1003,6 +1038,14 @@ video {
 .py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
+}
+
+.pb-16 {
+  padding-bottom: 4rem;
+}
+
+.pb-4 {
+  padding-bottom: 1rem;
 }
 
 .pl-4 {
@@ -1145,6 +1188,11 @@ video {
   transition-duration: 200ms;
 }
 
+.tab-bar {
+  background-color: var(--figma-color-bg);
+  border-bottom: 1px solid var(--figma-color-border);
+}
+
 .checked\:border-transparent:checked {
   border-color: transparent;
 }
@@ -1277,6 +1325,15 @@ video {
 
 :is(.figma-dark .dark\:border-opacity-40) {
   --tw-border-opacity: 0.4;
+}
+
+:is(.figma-dark .dark\:bg-\[\#2c2c2c\]) {
+  --tw-bg-opacity: 1;
+  background-color: rgb(44 44 44 / var(--tw-bg-opacity));
+}
+
+:is(.figma-dark .dark\:bg-\[\]) {
+  background-color: ;
 }
 
 :is(.figma-dark .dark\:bg-black) {

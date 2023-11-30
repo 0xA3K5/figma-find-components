@@ -3,9 +3,10 @@ import '!./output.css';
 import { h } from 'preact';
 import { render } from '@create-figma-plugin/ui';
 import { useEffect, useState } from 'preact/hooks';
-import { on } from '@create-figma-plugin/utilities';
+import { emit, on } from '@create-figma-plugin/utilities';
 import {
   ETabs,
+  GetLocalMissing,
   IComponent,
   IComponentInstance,
   UpdateLocalMissing,
@@ -27,13 +28,25 @@ function Plugin() {
     });
   }, []);
 
+  const handleGetLocalMissing = () => {
+    emit<GetLocalMissing>('GET_LOCAL_MISSING');
+  };
+
   return (
     <div className="flex flex-col gap-4 py-8">
-      <TabBar activeTab={activeTab} setActiveTab={setActiveTab} />
+      <TabBar
+        handleLocal={handleGetLocalMissing}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+      />
 
       {activeTab === ETabs.LOCAL && (
       <Layout>
-        <Tabs.Local localMissing={localMissingInstances} localMain={localMainComponents} />
+        <Tabs.Local
+          handleGetLocalMissing={handleGetLocalMissing}
+          localMissing={localMissingInstances}
+          localMain={localMainComponents}
+        />
       </Layout>
       )}
     </div>

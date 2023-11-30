@@ -1,20 +1,25 @@
 import { h, JSX } from 'preact';
 import { StateUpdater } from 'preact/hooks';
 import { ETabs } from '../types';
+import { IconButton } from './button';
+import { IconRefresh } from '../icons';
 
 interface TabBarProps {
   activeTab: ETabs;
   setActiveTab: StateUpdater<ETabs>;
+  handleLocal: () => void
 }
 
-export default function TabBar({ activeTab, setActiveTab }: TabBarProps): JSX.Element {
+export default function TabBar({
+  activeTab, setActiveTab, handleLocal,
+}: TabBarProps): JSX.Element {
+  const handleRefresh = () => {
+    handleLocal();
+  };
+
   return (
     <div
-      className="fixed inset-x-0 top-0 z-10 flex items-center justify-between p-3"
-      style={{
-        borderBottom: '1px solid var(--figma-color-border)',
-        backgroundColor: 'var(--figma-color-bg)',
-      }}
+      className="tab-bar fixed inset-x-0 top-0 z-10 flex items-center justify-between px-3 py-1"
     >
       <div className="flex items-center gap-4">
         {Object.values(ETabs).map((tab) => (
@@ -28,6 +33,9 @@ export default function TabBar({ activeTab, setActiveTab }: TabBarProps): JSX.El
           </button>
         ))}
       </div>
+      <IconButton onClick={handleRefresh}>
+        <IconRefresh />
+      </IconButton>
     </div>
   );
 }

@@ -1,8 +1,7 @@
 import { h, JSX } from 'preact';
 import { Button } from '@create-figma-plugin/ui';
 import { useState } from 'preact/hooks';
-import { emit } from '@create-figma-plugin/utilities';
-import { GetLocalMissing, IComponent, IComponentInstance } from '../types';
+import { IComponent, IComponentInstance } from '../types';
 import InstanceDisplayer from '../components/InstanceDisplayer';
 import { groupByPage, groupByMain } from '../utils';
 import ActionBar from '../components/ActionBar';
@@ -11,22 +10,21 @@ import { IconComponent } from '../icons';
 interface Props {
   localMissing: IComponentInstance[]
   localMain: IComponent[]
+  handleGetLocalMissing: () => void
 }
 
-export default function Local({ localMissing, localMain }: Props): JSX.Element {
+export default function Local({
+  localMissing, localMain, handleGetLocalMissing,
+}: Props): JSX.Element {
   const [checkedInstanceIds, setCheckedInstanceIds] = useState<{ [key: string]: boolean }>({});
   const groupedLocalMissing = groupByPage(groupByMain(localMissing));
-
-  const handleGetLocalMissing = () => {
-    emit<GetLocalMissing>('GET_LOCAL_MISSING');
-  };
 
   const isAnyInstanceChecked = Object.values(checkedInstanceIds).some((isChecked) => isChecked);
 
   if (localMissing.length === 0) {
     return (
       <div className="flex h-full w-full flex-col items-center justify-center gap-4 py-8">
-        <h2 className="text-base">No Local Missing</h2>
+        <h2 className="text-base">No Locally Missing</h2>
         <Button onClick={handleGetLocalMissing}>Find Local Missing</Button>
       </div>
     );
