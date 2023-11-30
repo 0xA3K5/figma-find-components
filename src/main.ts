@@ -92,12 +92,20 @@ const getComponents = (): IComponent[] => {
   return components;
 };
 
-const figmaSelectNodes = (nodes: SceneNode[]) => {
-  const page = getPage(nodes[0]);
-  if (page !== null) {
-    figma.currentPage = page;
-    figma.currentPage.selection = nodes;
-    figma.viewport.scrollAndZoomIntoView(nodes);
+const figmaSelectNodes = (nodes: (BaseNode | null)[]) => {
+  const sceneNodes = nodes
+    .flatMap((node) => (node || []))
+    .flatMap((node) => ((node.type !== 'DOCUMENT' && node.type !== 'PAGE') ? node : []));
+
+  if (sceneNodes.length === 0) {
+    figma.notify('This instance was deleted');
+  } else {
+    const page = getPage(sceneNodes[0]);
+    if (page !== null) {
+      figma.currentPage = page;
+      figma.currentPage.selection = sceneNodes;
+      figma.viewport.scrollAndZoomIntoView(sceneNodes);
+    }
   }
 };
 
@@ -221,7 +229,7 @@ export default function () {
   });
 
   on<ReplaceInstances>('REPLACE_INSTANCES', ({ instances, replaceWith }) => {
-    const instanceNodes = instances.map((instance) => figma.getNodeById(instance.id) as SceneNode);
+    const instanceNodes = instances.map((instance) => figma.getNodeById(instance.id));
     const componentNode = figma.getNodeById(replaceWith.id);
 
     if (componentNode && componentNode.type === 'COMPONENT') {
