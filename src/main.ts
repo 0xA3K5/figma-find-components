@@ -204,13 +204,14 @@ export default function () {
 
   on<DetachInstances>('DETACH_INSTANCES', (instances: IComponentInstance[]) => {
     const instanceNodes = instances.map((instance) => figma.getNodeById(instance.id) as SceneNode);
-
+    const detachedFrames: FrameNode[] = [];
     instanceNodes.forEach((node) => {
       if (node && node.type === 'INSTANCE') {
-        node.detachInstance();
+        detachedFrames.push(node.detachInstance());
       }
     });
     figma.notify(`🔗 Detached: ${instanceNodes.length} instances`);
+    figmaSelectNodes(detachedFrames);
     updateLocalMissingData(instances);
     emit<UpdateLocalMissing>('UPDATE_LOCAL_MISSING', { missing: localMissingData.missingInstances, components: localMissingData.components });
   });
